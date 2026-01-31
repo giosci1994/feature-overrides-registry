@@ -1,0 +1,37 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Publish (win-x64, single file)
+        run: dotnet publish .\src\FeatureOverridesSetter\FeatureOverridesSetter.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o .\release\win-x64
+
+      - name: Package repository zip
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          $zip = "release/feature-overrides-registry-${{ github.ref_name }}.zip"
+          Compress-Archive -Path * -DestinationPath $zip -Force
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/feature-overrides-registry-${{ github.ref_name }}.zip
+            release/win-x64/FeatureOverridesSetter.exe
