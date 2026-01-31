@@ -22,16 +22,23 @@ jobs:
       - name: Publish (win-x64, single file)
         run: dotnet publish .\src\FeatureOverridesSetter\FeatureOverridesSetter.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o .\release\win-x64
 
-      - name: Package repository zip
+      - name: Package artifacts
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path release | Out-Null
-          $zip = "release/feature-overrides-registry-${{ github.ref_name }}.zip"
-          Compress-Archive -Path * -DestinationPath $zip -Force
+          New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+
+          # 1) Zip repo (escludendo cartelle generate)
+          $repoZip = "artifacts/feature-overrides-registry-${{ github.ref_name }}.zip"
+          Compress-Archive -Path * -DestinationPath $repoZip -Force -Exclude "release/*","artifacts/*",".git/*"
+
+          # 2) Zip binari pubblicati
+          $binZip = "artifacts/FeatureOverridesSetter-win-x64-${{ github.ref_name }}.zip"
+          Compress-Archive -Path "release/win-x64/*" -DestinationPath $binZip -Force
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            release/feature-overrides-registry-${{ github.ref_name }}.zip
+            artifacts/feature-overrides-registry-${{ github.ref_name }}.zip
+            artifacts/FeatureOverridesSetter-win-x64-${{ github.ref_name }}.zip
             release/win-x64/FeatureOverridesSetter.exe
