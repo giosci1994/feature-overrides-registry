@@ -64,6 +64,36 @@ FeatureOverridesSetter.exe disable
   Produce:
   - ZIP dei sorgenti “packaged”
   - `.exe` self-contained per Windows x64
+ 
+## Verifica integrità (SHA256) / Integrity Verification
+
+Ogni Release ufficiale include:
+
+- `SHA256SUMS.txt` — Hash SHA256 degli asset pubblicati
+- `VERIFY.ps1` — Script di verifica automatica
+- `FeatureOverridesSetter.exe` — Eseguibile principale
+
+Questo sistema garantisce che i file scaricati non siano stati modificati,
+corrotti o manomessi.
+
+---
+
+### Verifica rapida (Consigliata)
+
+1. Scarica dalla Release:
+
+   - `FeatureOverridesSetter.exe`
+   - `SHA256SUMS.txt`
+   - `VERIFY.ps1`
+
+2. Metti tutti i file **nella stessa cartella**  
+   (es. `Downloads\FeatureOverrides`)
+
+3. Apri PowerShell nella cartella ed esegui:
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\VERIFY.ps1
+
 
 ## Licenza
 MIT — vedi `LICENSE`.
