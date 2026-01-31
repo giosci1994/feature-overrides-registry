@@ -33,7 +33,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path artifacts | Out-Null
 
-          # 1) Repo ZIP (solo file/cartelle utili, evita release/artifacts e roba temporanea)
+          # 1) Repo ZIP (solo file/cartelle utili)
           $repoZip = "artifacts/feature-overrides-registry-${{ github.ref_name }}.zip"
           $include = @(
             ".github",
@@ -51,10 +51,39 @@ jobs:
           $binZip = "artifacts/FeatureOverridesSetter-win-x64-${{ github.ref_name }}.zip"
           Compress-Archive -Path "release/win-x64/*" -DestinationPath $binZip -Force
 
-      - name: Create GitHub Release
+          # 3) Copia script verifica con nome più comodo per l'utente
+          Copy-Item -Force ".\scripts\verify-sha256.ps1" ".\artifacts\VERIFY.ps1"
+
+      - name: Generate SHA256 checksums
+        shell: pwsh
+        run: |
+          $files = @(
+            "artifacts/feature-overrides-registry-${{ github.ref_name }}.zip",
+            "artifacts/FeatureOverridesSetter-win-x64-${{ github.ref_name }}.zip",
+            "release/win-x64/FeatureOverridesSetter.exe",
+            "artifacts/VERIFY.ps1"
+          )
+
+          $out = "artifacts/SHA256SUMS.txt"
+          if (Test-Path $out) { Remove-Item $out -Force }
+
+          foreach ($f in $files) {
+            if (-not (Test-Path $f)) { throw "Missing file: $f" }
+            $hash = (Get-FileHash -Algorithm SHA256 $f).Hash.ToLower()
+            $name = [System.IO.Path]::GetFileName($f)
+            "$hash  $name" | Out-File -FilePath $out -Encoding ascii -Append
+          }
+
+          Write-Host "SHA256 written to $out"
+          Get-Content $out
+
+      - name: Create GitHub Release (auto notes)
         uses: softprops/action-gh-release@v2
         with:
+          generate_release_notes: true
           files: |
             artifacts/feature-overrides-registry-${{ github.ref_name }}.zip
             artifacts/FeatureOverridesSetter-win-x64-${{ github.ref_name }}.zip
             release/win-x64/FeatureOverridesSetter.exe
+            artifacts/SHA256SUMS.txt
+            artifacts/VERIFY.ps1
