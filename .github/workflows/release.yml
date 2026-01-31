@@ -11,8 +11,10 @@ permissions:
 jobs:
   release:
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -20,18 +22,32 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Publish (win-x64, single file)
-        run: dotnet publish .\src\FeatureOverridesSetter\FeatureOverridesSetter.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o .\release\win-x64
+        run: >
+          dotnet publish .\src\FeatureOverridesSetter\FeatureOverridesSetter.csproj
+          -c Release -r win-x64 --self-contained true
+          /p:PublishSingleFile=true
+          -o .\release\win-x64
 
       - name: Package artifacts
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts | Out-Null
 
-          # 1) Zip repo (escludendo cartelle generate)
+          # 1) Repo ZIP (solo file/cartelle utili, evita release/artifacts e roba temporanea)
           $repoZip = "artifacts/feature-overrides-registry-${{ github.ref_name }}.zip"
-          Compress-Archive -Path * -DestinationPath $repoZip -Force -Exclude "release/*","artifacts/*",".git/*"
+          $include = @(
+            ".github",
+            "scripts",
+            "reg",
+            "src",
+            "README.md",
+            "LICENSE",
+            ".gitignore"
+          ) | Where-Object { Test-Path $_ }
 
-          # 2) Zip binari pubblicati
+          Compress-Archive -Path $include -DestinationPath $repoZip -Force
+
+          # 2) Binari pubblicati
           $binZip = "artifacts/FeatureOverridesSetter-win-x64-${{ github.ref_name }}.zip"
           Compress-Archive -Path "release/win-x64/*" -DestinationPath $binZip -Force
 
