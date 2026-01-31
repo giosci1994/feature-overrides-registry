@@ -1,144 +1,130 @@
+using System;
 using Microsoft.Win32;
-using System.Security.Principal;
 
-static bool IsAdministrator()
+namespace FeatureOverridesSetter
 {
-    using var identity = WindowsIdentity.GetCurrent();
-    var principal = new WindowsPrincipal(identity);
-    return principal.IsInRole(WindowsBuiltInRole.Administrator);
-}
-
-static int EnsureAdmin()
-{
-    if (!IsAdministrator())
+    internal static class Program
     {
-        Console.Error.WriteLine("ERROR: avvia come Amministratore (HKLM richiede privilegi elevati).");
-        return 1;
-    }
-    return 0;
-}
-
-const string RegPath = @"SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides";
-static readonly string[] Names = { "735209102", "1853569164", "156965516" };
-
-static void Enable()
-{
-    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-    using var key = baseKey.CreateSubKey(RegPath, writable: true) ?? throw new Exception("Impossibile creare/aprire la chiave registro.");
-    foreach (var name in Names)
-        key.SetValue(name, 1, RegistryValueKind.DWord);
-
-    Console.WriteLine("OK: impostate 3 DWORD a 1.");
-    Console.WriteLine("Riavvia Windows per applicare il cambio.");
-}
-
-static void Disable()
-{
-    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-    using var key = baseKey.OpenSubKey(RegPath, writable: true);
-    if (key is null)
-    {
-        Console.WriteLine("Chiave non presente: niente da fare.");
-        return;
-    }
-
-    foreach (var name in Names)
-        key.DeleteValue(name, throwOnMissingValue: false);
-
-    Console.WriteLine("OK: rimosse 3 DWORD (se esistevano).");
-    Console.WriteLine("Riavvia Windows per applicare il cambio.");
-}
-
-static int Status()
-{
-    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-    using var key = baseKey.OpenSubKey(RegPath, writable: false);
-    if (key is null)
-    {
-        Console.WriteLine("STATUS: chiave Overrides non presente.");
-        return 2;
-    }
-
-    var ok = true;
-    foreach (var name in Names)
-    {
-        var v = key.GetValue(name);
-        if (v is int i)
+        private const string RegPath = @"SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides";
+        private static readonly string[] Keys =
         {
-            Console.WriteLine($"{name} = {i}");
-            if (i != 1) ok = false;
-        }
-        else
+            "735209102",
+            "1853569164",
+            "156965516"
+        };
+
+        private static int Main(string[] args)
         {
-            Console.WriteLine($"{name} = (missing)");
-            ok = false;
+            if (args.Length == 0)
+            {
+                PrintHelp();
+                return 1;
+            }
+
+            var cmd = args[0].Trim().ToLowerInvariant();
+
+            try
+            {
+                return cmd switch
+                {
+                    "enable" => Enable(),
+                    "disable" => Disable(),
+                    "status" => Status(),
+                    "help" or "-h" or "--help" => HelpOk(),
+                    _ => Unknown(cmd)
+                };
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.Error.WriteLine("ERROR: permessi insufficienti. Esegui come Amministratore.");
+                return 5;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"ERROR: {ex.GetType().Name}: {ex.Message}");
+                return 10;
+            }
+        }
+
+        private static int HelpOk()
+        {
+            PrintHelp();
+            return 0;
+        }
+
+        private static int Unknown(string cmd)
+        {
+            Console.Error.WriteLine($"Comando non valido: {cmd}");
+            PrintHelp();
+            return 2;
+        }
+
+        private static void PrintHelp()
+        {
+            Console.WriteLine("FeatureOverridesSetter");
+            Console.WriteLine("Uso:");
+            Console.WriteLine("  FeatureOverridesSetter.exe enable   # imposta le 3 DWORD a 1");
+            Console.WriteLine("  FeatureOverridesSetter.exe disable  # rimuove le 3 DWORD");
+            Console.WriteLine("  FeatureOverridesSetter.exe status   # mostra lo stato attuale");
+        }
+
+        private static RegistryKey OpenBaseKeyWritable()
+        {
+            // HKLM richiede admin
+            var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            return baseKey.CreateSubKey(RegPath, writable: true)
+                   ?? throw new Exception("Impossibile creare/aprire la chiave di registro target.");
+        }
+
+        private static RegistryKey OpenBaseKeyReadable()
+        {
+            var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            return baseKey.OpenSubKey(RegPath, writable: false)
+                   ?? throw new Exception("Chiave non trovata (non esiste ancora).");
+        }
+
+        private static int Enable()
+        {
+            using var key = OpenBaseKeyWritable();
+            foreach (var name in Keys)
+            {
+                key.SetValue(name, 1, RegistryValueKind.DWord);
+            }
+
+            Console.WriteLine("OK: override abilitati (DWORD=1).");
+            return 0;
+        }
+
+        private static int Disable()
+        {
+            using var key = OpenBaseKeyWritable();
+            foreach (var name in Keys)
+            {
+                // DeleteValue con throwOnMissing = false
+                try { key.DeleteValue(name, throwOnMissingValue: false); } catch { /* ignore */ }
+            }
+
+            Console.WriteLine("OK: override rimossi.");
+            return 0;
+        }
+
+        private static int Status()
+        {
+            using var key = OpenBaseKeyReadable();
+
+            Console.WriteLine($@"HKLM\{RegPath}");
+            foreach (var name in Keys)
+            {
+                var val = key.GetValue(name);
+                if (val is int i)
+                    Console.WriteLine($"  {name} = {i}");
+                else if (val is null)
+                    Console.WriteLine($"  {name} = (missing)");
+                else
+                    Console.WriteLine($"  {name} = {val} ({val.GetType().Name})");
+            }
+
+            return 0;
         }
     }
-
-    Console.WriteLine(ok ? "STATUS: ENABLED" : "STATUS: NOT fully enabled");
-    return ok ? 0 : 3;
-}
-
-static void FixSafeBoot()
-{
-    // Community reported: Safe Mode may lack "Storage Disks" class ID entries.
-    const string clsid = "{75416E63-5912-4DFA-AE8F-3EFACCAFFB14}";
-    string[] paths = {
-        $@"SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{clsid}",
-        $@"SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{clsid}",
-    };
-
-    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-    foreach (var p in paths)
-    {
-        using var key = baseKey.CreateSubKey(p, writable: true) ?? throw new Exception("Impossibile creare chiave SafeBoot.");
-        key.SetValue("", "Storage Disks", RegistryValueKind.String);
-    }
-
-    Console.WriteLine("OK: aggiunte chiavi SafeBoot per Storage Disks (se mancanti).");
-    Console.WriteLine("Riavvia e TESTA Safe Mode manualmente.");
-}
-
-static void PrintHelp()
-{
-    Console.WriteLine("FeatureOverridesSetter");
-    Console.WriteLine("Usage:");
-    Console.WriteLine("  FeatureOverridesSetter.exe enable");
-    Console.WriteLine("  FeatureOverridesSetter.exe disable");
-    Console.WriteLine("  FeatureOverridesSetter.exe status");
-    Console.WriteLine("  FeatureOverridesSetter.exe fix-safeboot   (advanced)");
-}
-
-if (args.Length == 0)
-{
-    PrintHelp();
-    return 0;
-}
-
-var cmd = args[0].Trim().ToLowerInvariant();
-switch (cmd)
-{
-    case "enable":
-        if (EnsureAdmin() != 0) return 1;
-        Enable();
-        return 0;
-    case "disable":
-        if (EnsureAdmin() != 0) return 1;
-        Disable();
-        return 0;
-    case "status":
-        return Status();
-    case "fix-safeboot":
-        if (EnsureAdmin() != 0) return 1;
-        FixSafeBoot();
-        return 0;
-    case "-h":
-    case "--help":
-    case "help":
-        PrintHelp();
-        return 0;
-    default:
-        Console.Error.WriteLine($"Comando sconosciuto: {cmd}");
-        PrintHelp();
-        return 2;
 }
