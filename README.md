@@ -12,12 +12,12 @@ Queste chiavi vengono comunemente usate come *feature overrides* per abilitare u
 
 ## Cosa fanno (in pratica)
 
-In molte installazioni Windows client, gli SSD NVMe possono apparire/operare attraverso uno stack “SCSI/Storport” (ad esempio tramite `disk.sys`) invece di una gestione NVMe “più diretta”. Questi override forzano l’attivazione di una funzionalità nascosta che può far comparire i dischi NVMe sotto **“Storage disks”** e usare un percorso/driver NVMe dedicato, con potenziali miglioramenti in alcune metriche (IOPS, letture/scritture in certe dimensioni di blocco) — ma con **caveat di compatibilità**. citeturn1view1turn0search7turn1view2
+In molte installazioni Windows client, gli SSD NVMe possono apparire/operare attraverso uno stack “SCSI/Storport” (ad esempio tramite `disk.sys`) invece di una gestione NVMe “più diretta”. Questi override forzano l’attivazione di una funzionalità nascosta che può far comparire i dischi NVMe sotto **“Storage disks”** e usare un percorso/driver NVMe dedicato, con potenziali miglioramenti in alcune metriche (IOPS, letture/scritture in certe dimensioni di blocco) — ma con **caveat di compatibilità**.
 
 ### Avvertenze importanti
 - **Backup/restore point consigliato** prima di modificare il registro.
 - È stato riportato che su alcuni sistemi possono verificarsi anomalie (drive duplicati, drive non riconosciuti, strumenti di gestione che “perdono” l’NVMe, ecc.). citeturn1view1
-- Microsoft ha indicato chiaramente che **“Native NVMe” è supportato solo su Windows Server 2025** (con l’update di ottobre o successivi). Su Windows 11 si tratta di un uso non ufficiale/sperimentale. citeturn1view2
+- Microsoft ha indicato chiaramente che **“Native NVMe” è supportato solo su Windows Server 2025** (con l’update di ottobre o successivi). Su Windows 11 si tratta di un uso non ufficiale/sperimentale.
 
 ## Modalità d’uso
 
