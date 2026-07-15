@@ -1,0 +1,32 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+release/
+artifacts/
+
+# .NET
+*.user
+*.suo
+*.userprefs
+project.lock.json
+.vs/
+
+# Publish output
+publish/
+*.nupkg
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs / temp
+*.log
+.cache/
+.tmp/
