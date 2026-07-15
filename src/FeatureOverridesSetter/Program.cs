@@ -76,11 +76,12 @@ namespace FeatureOverridesSetter
                    ?? throw new Exception("Impossibile creare/aprire la chiave di registro target.");
         }
 
-        private static RegistryKey OpenBaseKeyReadable()
+        private static RegistryKey? OpenBaseKeyReadable()
         {
             var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            return baseKey.OpenSubKey(RegPath, writable: false)
-                   ?? throw new Exception("Chiave non trovata (non esiste ancora).");
+            // Ritorna null se la chiave non esiste ancora (override mai impostati):
+            // lo gestisce Status() senza andare in errore.
+            return baseKey.OpenSubKey(RegPath, writable: false);
         }
 
         private static int Enable()
@@ -113,18 +114,38 @@ namespace FeatureOverridesSetter
             using var key = OpenBaseKeyReadable();
 
             Console.WriteLine($@"HKLM\{RegPath}");
+
+            if (key is null)
+            {
+                foreach (var name in Keys)
+                    Console.WriteLine($"  {name} = (missing)");
+                Console.WriteLine("STATUS: not set (la chiave non esiste ancora).");
+                return 1;
+            }
+
+            var allEnabled = true;
             foreach (var name in Keys)
             {
                 var val = key.GetValue(name);
                 if (val is int i)
+                {
                     Console.WriteLine($"  {name} = {i}");
+                    if (i != 1) allEnabled = false;
+                }
                 else if (val is null)
+                {
                     Console.WriteLine($"  {name} = (missing)");
+                    allEnabled = false;
+                }
                 else
+                {
                     Console.WriteLine($"  {name} = {val} ({val.GetType().Name})");
+                    allEnabled = false;
+                }
             }
 
-            return 0;
+            Console.WriteLine(allEnabled ? "STATUS: ENABLED" : "STATUS: NOT fully enabled");
+            return allEnabled ? 0 : 2;
         }
     }
 }

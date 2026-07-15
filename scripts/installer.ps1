@@ -33,8 +33,14 @@ function Relaunch-AsAdmin {
 
 $script = $MyInvocation.MyCommand.Path
 if (-not (Test-Admin)) {
-  $args = "-ExecutionPolicy Bypass -File `"$script`" -Action $Action"
-  Relaunch-AsAdmin -Args $args
+  $relaunchArgs = "-ExecutionPolicy Bypass -File `"$script`" -Action $Action"
+  Relaunch-AsAdmin -Args $relaunchArgs
+}
+
+function Wait-Exit {
+  # Evita che la finestra elevata si chiuda prima che l'utente legga l'output.
+  Write-Host ""
+  [void](Read-Host "Premi INVIO per chiudere")
 }
 
 $here = Split-Path -Parent $script
@@ -64,10 +70,10 @@ function Fix-SafeBoot {
 }
 
 switch ($Action) {
-  "enable" { Enable-Overrides; exit }
-  "disable" { Disable-Overrides; exit }
-  "status" { Status-Overrides; exit }
-  "fix-safeboot" { Fix-SafeBoot; exit }
+  "enable" { Enable-Overrides; Wait-Exit; exit }
+  "disable" { Disable-Overrides; Wait-Exit; exit }
+  "status" { Status-Overrides; Wait-Exit; exit }
+  "fix-safeboot" { Fix-SafeBoot; Wait-Exit; exit }
   default { }
 }
 
@@ -88,3 +94,5 @@ switch ($choice) {
   "4" { Fix-SafeBoot }
   default { Write-Host "Bye." }
 }
+
+Wait-Exit
