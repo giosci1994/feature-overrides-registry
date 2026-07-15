@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { width: 1280px; height: 640px; overflow: hidden; }
+
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: #e8eef6;
+      background:
+        radial-gradient(1200px 700px at 82% -10%, rgba(0, 120, 214, 0.28), transparent 60%),
+        radial-gradient(900px 600px at 8% 115%, rgba(20, 190, 190, 0.20), transparent 55%),
+        linear-gradient(135deg, #0a0f16 0%, #0e1622 55%, #0a1119 100%);
+      position: relative;
+    }
+
+    /* subtle grid */
+    body::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(1000px 620px at 50% 40%, #000 55%, transparent 100%);
+    }
+
+    .wrap {
+      position: relative;
+      height: 100%;
+      padding: 74px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: #63b3ed;
+    }
+    .kicker .dot { width: 12px; height: 12px; border-radius: 50%; background: #2ea043; box-shadow: 0 0 16px #2ea043; }
+
+    h1 {
+      margin-top: 26px;
+      font-size: 96px;
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -2px;
+      background: linear-gradient(92deg, #ffffff 30%, #7cc4ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sub {
+      margin-top: 14px;
+      font-size: 40px;
+      font-weight: 600;
+      color: #9fb3c8;
+    }
+    .sub b { color: #14bebe; font-weight: 700; }
+
+    .desc {
+      margin-top: 30px;
+      max-width: 900px;
+      font-size: 24px;
+      line-height: 1.5;
+      color: #b9c7d6;
+    }
+
+    .chip {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 22px;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 21px;
+      color: #cfe6ff;
+      background: rgba(0, 120, 214, 0.12);
+      border: 1px solid rgba(99, 179, 237, 0.35);
+      border-radius: 12px;
+    }
+    .chip .k { color: #7ee0e0; }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .badges { display: flex; gap: 14px; }
+    .badge {
+      padding: 12px 20px;
+      font-size: 21px;
+      font-weight: 600;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #dbe6f2;
+    }
+    .badge.win { border-color: rgba(0,120,214,0.5); color: #7cc4ff; }
+    .who {
+      text-align: right;
+      font-size: 22px;
+      color: #8aa0b6;
+    }
+    .who b { color: #e8eef6; font-weight: 700; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div>
+      <span class="kicker"><span class="dot"></span> Windows · Registry Tool</span>
+      <h1>Feature Overrides</h1>
+      <div class="sub">Native <b>NVMe</b> toggle</div>
+      <div class="desc">
+        Enable or disable the hidden Windows <em>Feature Management</em> overrides that
+        unlock experimental Native NVMe support — one-click script, <code>.reg</code> files
+        or a .NET tool, with clean rollback and SHA256-verified releases.
+      </div>
+      <div class="chip"><span class="k">HKLM\…\FeatureManagement\Overrides</span> → 3 × DWORD = 1</div>
+    </div>
+
+    <div class="footer">
+      <div class="badges">
+        <span class="badge win">🪟 Windows x64</span>
+        <span class="badge">PowerShell</span>
+        <span class="badge">.NET 8</span>
+        <span class="badge">MIT</span>
+      </div>
+      <div class="who"><b>github.com/giosci1994</b><br>feature-overrides-registry</div>
+    </div>
+  </div>
+</body>
+
+</html>
