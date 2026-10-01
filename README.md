@@ -12,6 +12,7 @@ experimental "Native NVMe" support — via one-click script, `.reg` files or a s
   <img src="https://img.shields.io/github/downloads/giosci1994/feature-overrides-registry/total" alt="Downloads" />
   <img src="https://img.shields.io/badge/platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows" />
   <a href="LICENSE"><img src="https://img.shields.io/github/license/giosci1994/feature-overrides-registry" alt="License" /></a>
+  <a href="https://buymeacoffee.com/giosci1994u"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
 </p>
 
 > ⚠️ **Unofficial / experimental on Windows 11.** These overrides modify the
@@ -137,6 +138,12 @@ confirm the downloaded files have not been altered, corrupted or tampered with.
 
 ---
 
+## ☕ Support
+
+If this tool is useful to you, you can buy me a coffee.
+
+<a href="https://buymeacoffee.com/giosci1994u"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="45" alt="Buy Me a Coffee" /></a>
+
 ## 📄 License
 
 [MIT](LICENSE) © Giovanni La Cascia
@@ -253,6 +260,12 @@ apri PowerShell lì ed esegui:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\VERIFY.ps1
 ```
+
+## ☕ Supporta il progetto
+
+Se questo strumento ti è utile, puoi offrirmi un caffè.
+
+<a href="https://buymeacoffee.com/giosci1994u"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="45" alt="Buy Me a Coffee" /></a>
 
 ## 📄 Licenza
 
