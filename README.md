@@ -58,7 +58,7 @@ caveats**.
 
 - **Windows** (x64) with **administrator privileges** (all changes are under `HKLM`).
 - For the `.NET` tool: nothing to install — release binaries are self-contained. To
-  build from source you need the **.NET 8 SDK**.
+  build from source you need the **.NET 10 SDK**.
 
 ---
 
@@ -201,7 +201,7 @@ di compatibilità**.
 
 - **Windows** (x64) con **privilegi di amministratore** (tutte le modifiche sono in `HKLM`).
 - Per il tool `.NET`: nulla da installare, i binari della release sono
-  self-contained. Per compilare dai sorgenti serve il **.NET 8 SDK**.
+  self-contained. Per compilare dai sorgenti serve il **.NET 10 SDK**.
 
 ## 🚀 Modalità d'uso
 
