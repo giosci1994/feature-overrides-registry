@@ -1,143 +1,175 @@
 <!doctype html>
+<!-- Source of docs/social-preview.png (1280x640), the GitHub social preview.
+     Regenerate (Firefox, any OS), from the folder of this file:
+       firefox --headless --window-size=1280,640 --screenshot social-preview.png social-preview.html
+     Same design system as the other projects (Arborae palette, Space Grotesk / Inter / JetBrains Mono). -->
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body { width: 1280px; height: 640px; overflow: hidden; }
 
     body {
-      font-family: "Segoe UI", system-ui, sans-serif;
-      color: #e8eef6;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+      color: #eef4f2;
       background:
-        radial-gradient(1200px 700px at 82% -10%, rgba(0, 120, 214, 0.28), transparent 60%),
-        radial-gradient(900px 600px at 8% 115%, rgba(20, 190, 190, 0.20), transparent 55%),
-        linear-gradient(135deg, #0a0f16 0%, #0e1622 55%, #0a1119 100%);
+        radial-gradient(900px 560px at 85% -15%, rgba(0, 181, 133, 0.22), transparent 60%),
+        radial-gradient(800px 520px at 0% 120%, rgba(95, 179, 166, 0.14), transparent 60%),
+        #070b0a;
       position: relative;
     }
 
-    /* subtle grid */
     body::before {
       content: "";
       position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: 48px 48px;
-      mask-image: radial-gradient(1000px 620px at 50% 40%, #000 55%, transparent 100%);
+      mask-image: radial-gradient(1000px 620px at 50% 30%, #000 50%, transparent 100%);
     }
 
     .wrap {
       position: relative;
       height: 100%;
-      padding: 74px 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      padding: 64px 72px;
+      display: grid;
+      grid-template-columns: 1fr 470px;
+      gap: 48px;
     }
 
+    .left { display: flex; flex-direction: column; }
+
     .kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      color: #63b3ed;
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 18px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: #34d399;
     }
-    .kicker .dot { width: 12px; height: 12px; border-radius: 50%; background: #2ea043; box-shadow: 0 0 16px #2ea043; }
+    .kicker .dot { width: 11px; height: 11px; border-radius: 50%; background: #34d399; box-shadow: 0 0 16px #34d399; }
 
     h1 {
       margin-top: 26px;
-      font-size: 96px;
-      font-weight: 800;
-      line-height: 0.98;
-      letter-spacing: -2px;
-      background: linear-gradient(92deg, #ffffff 30%, #7cc4ff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 78px; font-weight: 700;
+      line-height: 1; letter-spacing: -2px;
     }
 
     .sub {
-      margin-top: 14px;
-      font-size: 40px;
-      font-weight: 600;
-      color: #9fb3c8;
+      margin-top: 18px;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-size: 36px; font-weight: 600;
+      color: #9db3ad; line-height: 1.2;
     }
-    .sub b { color: #14bebe; font-weight: 700; }
+    .sub b {
+      background: linear-gradient(120deg, #34d399, #5fb3a6);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
 
     .desc {
-      margin-top: 30px;
-      max-width: 900px;
-      font-size: 24px;
-      line-height: 1.5;
-      color: #b9c7d6;
+      margin-top: 22px;
+      max-width: 600px;
+      font-size: 22px; line-height: 1.5;
+      color: #b6c8c2;
     }
 
-    .chip {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 22px;
-      font-family: Consolas, "Cascadia Mono", monospace;
-      font-size: 21px;
-      color: #cfe6ff;
-      background: rgba(0, 120, 214, 0.12);
-      border: 1px solid rgba(99, 179, 237, 0.35);
-      border-radius: 12px;
-    }
-    .chip .k { color: #7ee0e0; }
+    .bottom { margin-top: auto; }
 
-    .footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .badges { display: flex; gap: 14px; }
+    .badges { display: flex; gap: 12px; flex-wrap: wrap; }
     .badge {
-      padding: 12px 20px;
-      font-size: 21px;
-      font-weight: 600;
+      padding: 10px 18px;
+      font-size: 19px; font-weight: 600;
       border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #dbe6f2;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #dbe7e3;
     }
-    .badge.win { border-color: rgba(0,120,214,0.5); color: #7cc4ff; }
-    .who {
-      text-align: right;
-      font-size: 22px;
-      color: #8aa0b6;
+    .badge.win { border-color: rgba(76, 194, 255, 0.5); color: #8fd6ff; }
+    .badge.green { border-color: rgba(0, 181, 133, 0.5); color: #34d399; }
+
+    .repo {
+      margin-top: 22px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 20px; color: #64756f;
     }
-    .who b { color: #e8eef6; font-weight: 700; }
+    .repo b { color: #eef4f2; font-weight: 600; }
+
+    .right { display: flex; align-items: center; }
+
+    .window {
+      width: 100%;
+      background: rgba(10, 16, 15, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.7), 0 0 90px -30px rgba(0, 181, 133, 0.35);
+      transform: perspective(1400px) rotateY(-6deg) rotateX(2deg);
+    }
+
+    .bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 15px; color: #64756f;
+    }
+
+
+    .badges { flex-wrap: nowrap; gap: 10px; }
+    .badge { font-size: 17px; padding: 9px 15px; white-space: nowrap; }
+
+    h1 { font-size: 70px; white-space: nowrap; }
+    .reg { padding: 20px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #9db3ad; line-height: 1.6; }
+    .reg .k { color: #64756f; margin-bottom: 14px; word-break: break-all; }
+    .row { display: grid; grid-template-columns: 1fr 90px 40px; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); margin-top: 10px; }
+    .row b { color: #eef4f2; font-weight: 600; } .row .v { color: #34d399; font-weight: 600; text-align: right; }
+    .state { margin-top: 18px; display: flex; gap: 10px; align-items: center; color: #34d399; font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 600; }
+    .state i { width: 10px; height: 10px; border-radius: 50%; background: #34d399; box-shadow: 0 0 12px #34d399; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div>
-      <span class="kicker"><span class="dot"></span> Windows · Registry Tool</span>
+    <div class="left">
+      <span class="kicker"><span class="dot"></span> Windows · Registry tool</span>
       <h1>Feature Overrides</h1>
-      <div class="sub">Native <b>NVMe</b> toggle</div>
+      <div class="sub">Native <b>NVMe</b> toggle.</div>
       <div class="desc">
-        Enable or disable the hidden Windows <em>Feature Management</em> overrides that
-        unlock experimental Native NVMe support — one-click script, <code>.reg</code> files
-        or a .NET tool, with clean rollback and SHA256-verified releases.
+        Enable or disable the hidden Feature Management overrides behind experimental Native NVMe — script, .reg files or a .NET tool, with clean rollback.
       </div>
-      <div class="chip"><span class="k">HKLM\…\FeatureManagement\Overrides</span> → 3 × DWORD = 1</div>
+
+      <div class="bottom">
+        <div class="badges">
+          <span class="badge win">🪟 Windows x64</span>
+          <span class="badge ">PowerShell · .NET 10</span>
+          <span class="badge green">SHA256</span>
+          <span class="badge ">MIT</span>
+        </div>
+        <div class="repo"><b>github.com/giosci1994</b>/feature-overrides-registry</div>
+      </div>
     </div>
 
-    <div class="footer">
-      <div class="badges">
-        <span class="badge win">🪟 Windows x64</span>
-        <span class="badge">PowerShell</span>
-        <span class="badge">.NET 10</span>
-        <span class="badge">MIT</span>
+    <div class="right">
+      <div class="window">
+        <div class="bar"><span>FeatureOverridesSetter.exe status</span><span>admin</span></div>
+        <div class="reg">
+          <div class="k">HKLM\SYSTEM\CurrentControlSet\Policies\<br>Microsoft\FeatureManagement\Overrides</div>
+          <div class="row"><b>735209102</b><span>DWORD</span><span class="v">1</span></div>
+          <div class="row"><b>1853569164</b><span>DWORD</span><span class="v">1</span></div>
+          <div class="row"><b>156965516</b><span>DWORD</span><span class="v">1</span></div>
+          <div class="state"><i></i>Native NVMe overrides: enabled</div>
+        </div>
       </div>
-      <div class="who"><b>github.com/giosci1994</b><br>feature-overrides-registry</div>
     </div>
   </div>
 </body>

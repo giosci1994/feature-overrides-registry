@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en"
+  data-en-title="Feature Overrides — Native NVMe toggle for Windows"
+  data-it-title="Feature Overrides — Attiva Native NVMe su Windows">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#070b0a" />
+  <meta name="description"
+    content="Enable or disable the hidden Windows Feature Management overrides that unlock experimental Native NVMe support: one-click script, .reg files or a .NET tool, with clean rollback and SHA256-verified releases."
+    data-en="Enable or disable the hidden Windows Feature Management overrides that unlock experimental Native NVMe support: one-click script, .reg files or a .NET tool, with clean rollback and SHA256-verified releases."
+    data-it="Abilita o disabilita gli override nascosti di Feature Management di Windows che sbloccano il supporto sperimentale Native NVMe: script one-click, file .reg o un tool .NET, con rollback pulito e release verificate SHA256." />
+  <title>Feature Overrides — Native NVMe toggle for Windows</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Feature Overrides — Native NVMe toggle for Windows" />
+  <meta property="og:description"
+    content="Three registry overrides, one click to enable, one to roll back. Script, .reg files or a .NET tool, SHA256-verified releases." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://giosci1994.github.io/feature-overrides-registry/" />
+  <meta property="og:image" content="https://giosci1994.github.io/feature-overrides-registry/social-preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%BD%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="./js/main.js" defer></script>
+</head>
+
+<body>
+  <div class="bg">
+    <div class="bg-grid"></div>
+  </div>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <a class="brand-main" href="#top" aria-label="Feature Overrides">
+          <span class="brand-mark" aria-hidden="true">💽</span>
+          <span>Feature Overrides</span>
+        </a>
+      </div>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#what" data-en="What it does" data-it="Cosa fa">What it does</a>
+        <a href="#usage" data-en="Usage" data-it="Uso">Usage</a>
+        <a href="#download" data-en="Download" data-it="Scarica">Download</a>
+      </nav>
+
+      <div class="nav-cta">
+        <button id="lang-toggle" class="btn ghost small lang-btn" type="button" aria-label="Passa all'italiano">IT</button>
+        <a class="btn primary small" href="https://github.com/giosci1994/feature-overrides-registry" target="_blank"
+          rel="noreferrer">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <div class="kicker">
+          <span class="dot"></span>
+          <span data-en="Windows · Registry tool · MIT" data-it="Windows · Tool per il registro · MIT">Windows · Registry tool · MIT</span>
+        </div>
+
+        <h1 data-en="Native NVMe, <span class=&quot;accent-text&quot;>one switch</span>."
+          data-it="Native NVMe, <span class=&quot;accent-text&quot;>un interruttore</span>.">
+          Native NVMe, <span class="accent-text">one switch</span>.
+        </h1>
+
+        <p class="lead"
+          data-en="Enable or disable the hidden Windows <b>Feature Management</b> overrides that unlock experimental Native NVMe support — via one-click script, <code>.reg</code> files or a small .NET tool, with a clean rollback."
+          data-it="Abilita o disabilita gli override nascosti di <b>Feature Management</b> di Windows che sbloccano il supporto sperimentale Native NVMe — con uno script one-click, file <code>.reg</code> o un piccolo tool .NET, e un rollback pulito.">
+          Enable or disable the hidden Windows <b>Feature Management</b> overrides that unlock experimental Native
+          NVMe support — via one-click script, <code>.reg</code> files or a small .NET tool, with a clean rollback.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#download" data-en="Download" data-it="Scarica">Download</a>
+          <a class="btn ghost" href="https://github.com/giosci1994/feature-overrides-registry" target="_blank"
+            rel="noreferrer" data-en="View on GitHub" data-it="Vedi su GitHub">View on GitHub</a>
+        </div>
+
+        <div class="status-note">
+          <span aria-hidden="true">⚠️</span>
+          <span data-en="<b>Unofficial and experimental on Windows 11.</b> Microsoft supports Native NVMe only on Windows Server 2025. Create a restore point first."
+            data-it="<b>Non ufficiale e sperimentale su Windows 11.</b> Microsoft supporta Native NVMe solo su Windows Server 2025. Crea prima un punto di ripristino.">
+            <b>Unofficial and experimental on Windows 11.</b> Microsoft supports Native NVMe only on Windows Server
+            2025. Create a restore point first.
+          </span>
+        </div>
+
+        <div class="topics" role="list" aria-label="Topics">
+          <span class="pill" role="listitem">windows-11</span>
+          <span class="pill" role="listitem">nvme</span>
+          <span class="pill" role="listitem">registry</span>
+          <span class="pill" role="listitem">powershell</span>
+          <span class="pill" role="listitem">dotnet-10</span>
+          <span class="pill" role="listitem">sha256</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="window reg" aria-hidden="true">
+          <div class="win-bar">
+            <span class="win-title">FeatureOverridesSetter.exe status</span>
+          </div>
+          <div class="reg-body">
+            <div class="reg-key">HKLM\SYSTEM\CurrentControlSet\Policies\<br>Microsoft\FeatureManagement\Overrides</div>
+            <div class="reg-row"><b>735209102</b><span>DWORD</span><span class="v">1</span></div>
+            <div class="reg-row"><b>1853569164</b><span>DWORD</span><span class="v">1</span></div>
+            <div class="reg-row"><b>156965516</b><span>DWORD</span><span class="v">1</span></div>
+            <div class="reg-state" data-en="● Native NVMe overrides: enabled" data-it="● Override Native NVMe: attivi">● Native NVMe overrides: enabled</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="what" class="section">
+      <div class="section-head reveal">
+        <span class="section-label" data-en="// what it does" data-it="// cosa fa">// what it does</span>
+        <h2 data-en="Three DWORD values, nothing else" data-it="Tre valori DWORD, niente altro">Three DWORD values, nothing else</h2>
+        <p data-en="On many Windows client installs, NVMe SSDs go through a SCSI/Storport path (<code>disk.sys</code>). With these overrides they can show up under <b>Storage disks</b> and use a dedicated NVMe path."
+          data-it="In molte installazioni di Windows client gli SSD NVMe passano da un percorso SCSI/Storport (<code>disk.sys</code>). Con questi override possono comparire sotto <b>Storage disks</b> e usare un percorso NVMe dedicato.">On many Windows client installs, NVMe SSDs go through a SCSI/Storport path (<code>disk.sys</code>). With these overrides they can show up under <b>Storage disks</b> and use a dedicated NVMe path.</p>
+      </div>
+
+      <div class="cards-grid">
+        <article class="card reveal">
+          <span class="card-icon">⚡</span>
+          <h3 data-en="Possible gains" data-it="Possibili vantaggi">Possible gains</h3>
+          <p data-en="Better numbers in some metrics: IOPS, reads and writes at certain block sizes."
+            data-it="Numeri migliori in alcune metriche: IOPS, letture e scritture a certe dimensioni di blocco.">Better numbers in some metrics: IOPS, reads and writes at certain block sizes.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card-icon">⚠️</span>
+          <h3 data-en="Known caveats" data-it="Problemi noti">Known caveats</h3>
+          <p data-en="On some systems: duplicate or unrecognized drives, management tools that lose the NVMe."
+            data-it="Su alcuni sistemi: dischi duplicati o non riconosciuti, strumenti di gestione che perdono l'NVMe.">On some systems: duplicate or unrecognized drives, management tools that lose the NVMe.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card-icon">↩️</span>
+          <h3 data-en="Clean rollback" data-it="Rollback pulito">Clean rollback</h3>
+          <p data-en="Disable removes exactly the three values it created. Everything is under <code>HKLM</code>, so it needs administrator rights."
+            data-it="Disabilita toglie esattamente i tre valori che ha creato. Tutto sta sotto <code>HKLM</code>, quindi servono i diritti di amministratore.">Disable removes exactly the three values it created. Everything is under <code>HKLM</code>, so it needs administrator rights.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="usage" class="section">
+      <div class="section-head reveal">
+        <span class="section-label" data-en="// usage" data-it="// uso">// usage</span>
+        <h2 data-en="Four ways, same result" data-it="Quattro modi, stesso risultato">Four ways, same result</h2>
+        <p data-en="Everything requires an elevated (administrator) prompt." data-it="Tutto richiede un prompt da amministratore.">Everything requires an elevated (administrator) prompt.</p>
+      </div>
+
+      <div class="cards-grid">
+        <article class="card reveal">
+          <span class="card-icon">🖱️</span>
+          <h3 data-en="One-click menu" data-it="Menu one-click">One-click menu</h3>
+          <p data-en="<code>scripts/installer.ps1</code>: Enable, Disable, Status and an optional Safe Mode fix."
+            data-it="<code>scripts/installer.ps1</code>: Abilita, Disabilita, Stato e una correzione facoltativa per la modalità provvisoria."><code>scripts/installer.ps1</code>: Enable, Disable, Status and an optional Safe Mode fix.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card-icon">📜</span>
+          <h3 data-en="PowerShell scripts" data-it="Script PowerShell">PowerShell scripts</h3>
+          <p data-en="<code>set-overrides.ps1</code>, <code>remove-overrides.ps1</code>, <code>status-overrides.ps1</code>, non-interactive."
+            data-it="<code>set-overrides.ps1</code>, <code>remove-overrides.ps1</code>, <code>status-overrides.ps1</code>, non interattivi."><code>set-overrides.ps1</code>, <code>remove-overrides.ps1</code>, <code>status-overrides.ps1</code>, non-interactive.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card-icon">🗂️</span>
+          <h3 data-en=".reg files" data-it="File .reg">.reg files</h3>
+          <p data-en="<code>reg/feature-overrides-enable.reg</code> and <code>reg/feature-overrides-disable.reg</code>, double-click."
+            data-it="<code>reg/feature-overrides-enable.reg</code> e <code>reg/feature-overrides-disable.reg</code>, doppio clic."><code>reg/feature-overrides-enable.reg</code> and <code>reg/feature-overrides-disable.reg</code>, double-click.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card-icon">📦</span>
+          <h3 data-en=".NET tool" data-it="Tool .NET">.NET tool</h3>
+          <p data-en="<code>FeatureOverridesSetter.exe status | enable | disable</code>. Self-contained, nothing to install."
+            data-it="<code>FeatureOverridesSetter.exe status | enable | disable</code>. Autonomo, niente da installare."><code>FeatureOverridesSetter.exe status | enable | disable</code>. Self-contained, nothing to install.</p>
+        </article>
+      </div>
+
+      <div class="quickstart reveal">
+<pre><code data-en="# elevated PowerShell
+powershell -ExecutionPolicy Bypass -File .\scripts\installer.ps1"
+  data-it="# PowerShell da amministratore
+powershell -ExecutionPolicy Bypass -File .\scripts\installer.ps1"># elevated PowerShell
+powershell -ExecutionPolicy Bypass -File .\scripts\installer.ps1</code></pre>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <div class="section-head reveal">
+        <span class="section-label" data-en="// download" data-it="// scarica">// download</span>
+        <h2 data-en="Download and verify" data-it="Scarica e controlla">Download and verify</h2>
+        <p data-en="Every release has <code>SHA256SUMS.txt</code> and <code>VERIFY.ps1</code>: put them in the same folder as the files and run the script."
+          data-it="Ogni release ha <code>SHA256SUMS.txt</code> e <code>VERIFY.ps1</code>: mettili nella stessa cartella dei file e lancia lo script.">Every release has <code>SHA256SUMS.txt</code> and <code>VERIFY.ps1</code>: put them in the same folder as the files and run the script.</p>
+      </div>
+
+      <div class="quickstart reveal">
+<pre><code>powershell -ExecutionPolicy Bypass -File .\VERIFY.ps1</code></pre>
+        <p class="hint" data-en="Requires Windows x64 and administrator rights. The exe is self-contained (.NET 10 inside)."
+          data-it="Serve Windows x64 con i diritti di amministratore. L'exe è autonomo (.NET 10 già dentro).">Requires Windows x64 and administrator rights. The exe is self-contained (.NET 10 inside).</p>
+      </div>
+
+      <div class="cta-box reveal">
+        <div>
+          <h3 data-en="Latest release" data-it="Ultima versione">Latest release</h3>
+          <p data-en="<code>FeatureOverridesSetter.exe</code>, zipped binaries, sources, <code>SHA256SUMS.txt</code> and <code>VERIFY.ps1</code>."
+            data-it="<code>FeatureOverridesSetter.exe</code>, binari zippati, sorgenti, <code>SHA256SUMS.txt</code> e <code>VERIFY.ps1</code>."><code>FeatureOverridesSetter.exe</code>, zipped binaries, sources, <code>SHA256SUMS.txt</code> and <code>VERIFY.ps1</code>.</p>
+        </div>
+        <a class="btn primary" href="https://github.com/giosci1994/feature-overrides-registry/releases/latest" target="_blank"
+          rel="noreferrer" data-en="Go to Releases" data-it="Vai alle Releases">Go to Releases</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div class="footer-left">
+      <span aria-hidden="true">💽</span>
+      <span>© <span id="year">2026</span> giosci1994 · <span data-en="MIT License" data-it="Licenza MIT">MIT License</span></span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/giosci1994/feature-overrides-registry" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://github.com/giosci1994/feature-overrides-registry/releases" target="_blank" rel="noreferrer">Releases</a>
+      <a href="https://buymeacoffee.com/giosci1994u" target="_blank" rel="noreferrer">☕ Buy Me a Coffee</a>
+    </div>
+  </footer>
+</body>
+
+</html>

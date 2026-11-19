@@ -4,7 +4,7 @@
 experimental "Native NVMe" support — via one-click script, `.reg` files or a small
 .NET tool, with a clean rollback and SHA256-verified releases.**
 
-**🇬🇧 English** · [🇮🇹 Italiano](#-italiano)
+### 🌐 [giosci1994.github.io/feature-overrides-registry](https://giosci1994.github.io/feature-overrides-registry/)
 
 <p align="center">
   <a href="https://github.com/giosci1994/feature-overrides-registry/actions/workflows/build.yml"><img src="https://github.com/giosci1994/feature-overrides-registry/actions/workflows/build.yml/badge.svg" alt="Build" /></a>
@@ -13,6 +13,10 @@ experimental "Native NVMe" support — via one-click script, `.reg` files or a s
   <img src="https://img.shields.io/badge/platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows" />
   <a href="LICENSE"><img src="https://img.shields.io/github/license/giosci1994/feature-overrides-registry" alt="License" /></a>
   <a href="https://buymeacoffee.com/giosci1994u"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
+</p>
+
+<p align="center">
+  <img src="docs/social-preview.png" width="800" alt="Feature Overrides — Native NVMe toggle for Windows" />
 </p>
 
 > ⚠️ **Unofficial / experimental on Windows 11.** These overrides modify the
@@ -145,128 +149,5 @@ If this tool is useful to you, you can buy me a coffee.
 <a href="https://buymeacoffee.com/giosci1994u"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="45" alt="Buy Me a Coffee" /></a>
 
 ## 📄 License
-
-[MIT](LICENSE) © Giovanni La Cascia
-
-<br>
-
----
----
-
-<a id="-italiano"></a>
-
-# 🇮🇹 Italiano
-
-**Abilita o disabilita gli *override* nascosti di *Feature Management* di Windows
-che sbloccano il supporto sperimentale "Native NVMe" — tramite script one-click,
-file `.reg` o un piccolo tool .NET, con rollback pulito e release verificate SHA256.**
-
-> ⚠️ **Non ufficiale / sperimentale su Windows 11.** Questi override modificano il
-> registro di Windows sotto `HKLM`. Microsoft supporta ufficialmente "Native NVMe"
-> **solo su Windows Server 2025** (update di ottobre 2025 o successivi). Su Windows
-> 11 è un uso non ufficiale e sperimentale. **Crea prima un punto di ripristino.**
-
-## 🔧 Cosa fa
-
-Crea (o rimuove) tre valori **DWORD (32-bit)** nel registro:
-
-```
-HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides
-```
-
-| Nome valore | Dato |
-|-------------|------|
-| `735209102` | `1` |
-| `1853569164` | `1` |
-| `156965516` | `1` |
-
-Queste chiavi sono comunemente usate come *feature overrides* per abilitare una
-modalità **"Native NVMe"** nello stack driver/storage. In molte installazioni
-Windows client gli SSD NVMe vengono gestiti attraverso un percorso SCSI/Storport
-(es. tramite `disk.sys`) invece di una gestione NVMe più diretta. Attivare questa
-funzionalità nascosta può far comparire i dischi NVMe sotto **"Storage disks"** e
-usare un percorso/driver NVMe dedicato, con potenziali miglioramenti in alcune
-metriche (IOPS, letture/scritture a certe dimensioni di blocco) — ma con **caveat
-di compatibilità**.
-
-### ⚠️ Avvertenze importanti
-
-- **Backup / punto di ripristino** prima di modificare il registro.
-- Su alcuni sistemi sono state riportate anomalie (drive duplicati, drive non
-  riconosciuti, strumenti di gestione che "perdono" l'NVMe, ecc.).
-- "Native NVMe" è supportato ufficialmente **solo su Windows Server 2025** (update
-  di ottobre o successivi). Su Windows 11 è uso non ufficiale/sperimentale.
-
-## ✅ Requisiti
-
-- **Windows** (x64) con **privilegi di amministratore** (tutte le modifiche sono in `HKLM`).
-- Per il tool `.NET`: nulla da installare, i binari della release sono
-  self-contained. Per compilare dai sorgenti serve il **.NET 10 SDK**.
-
-## 🚀 Modalità d'uso
-
-> Tutto richiede **privilegi di amministratore** (HKLM).
-
-### 1) One-click (consigliato)
-
-`scripts/installer.ps1` — menu interattivo (Enable / Disable / Status / opzionale
-Fix Safe Mode). Esegui da PowerShell **come Admin**:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\installer.ps1
-```
-
-### 2) Script PowerShell (non interattivi)
-
-```powershell
-# Abilita
-powershell -ExecutionPolicy Bypass -File .\scripts\set-overrides.ps1
-# Disabilita
-powershell -ExecutionPolicy Bypass -File .\scripts\remove-overrides.ps1
-# Stato
-powershell -ExecutionPolicy Bypass -File .\scripts\status-overrides.ps1
-```
-
-### 3) File `.reg`
-
-- `reg/feature-overrides-enable.reg`
-- `reg/feature-overrides-disable.reg`
-
-### 4) Tool .NET (exe)
-
-Scarica l'artefatto della release (oppure compilalo), poi:
-
-```powershell
-FeatureOverridesSetter.exe status
-FeatureOverridesSetter.exe enable
-FeatureOverridesSetter.exe disable
-```
-
-## 🏗️ Build & Release (GitHub Actions)
-
-- **Build CI** su push su `main` / PR → [`.github/workflows/build.yml`](.github/workflows/build.yml)
-- **Release automatica** su tag `v*` (es. `v1.0.0`) → [`.github/workflows/release.yml`](.github/workflows/release.yml)
-
-Ogni release pubblica: l'eseguibile `FeatureOverridesSetter.exe` (self-contained
-Windows x64), lo ZIP dei binari, lo ZIP dei sorgenti, `SHA256SUMS.txt` e `VERIFY.ps1`.
-
-## 🔐 Verifica integrità (SHA256)
-
-Ogni release ufficiale include `SHA256SUMS.txt` e `VERIFY.ps1`: puoi verificare che
-i file scaricati non siano stati modificati, corrotti o manomessi. Metti
-`FeatureOverridesSetter.exe`, `SHA256SUMS.txt` e `VERIFY.ps1` nella stessa cartella,
-apri PowerShell lì ed esegui:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\VERIFY.ps1
-```
-
-## ☕ Supporta il progetto
-
-Se questo strumento ti è utile, puoi offrirmi un caffè.
-
-<a href="https://buymeacoffee.com/giosci1994u"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="45" alt="Buy Me a Coffee" /></a>
-
-## 📄 Licenza
 
 [MIT](LICENSE) © Giovanni La Cascia
