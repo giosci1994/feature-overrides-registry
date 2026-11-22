@@ -150,4 +150,4 @@ If this tool is useful to you, you can buy me a coffee.
 
 ## 📄 License
 
-[MIT](LICENSE) © Giovanni La Cascia
+[GNU GPL-3.0](LICENSE) © Giovanni La Cascia
