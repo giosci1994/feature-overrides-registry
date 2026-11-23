@@ -6,7 +6,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#070b0a" />
+  <meta name="color-scheme" content="dark light" />
   <meta name="description"
     content="Enable or disable the hidden Windows Feature Management overrides that unlock experimental Native NVMe support: one-click script, .reg files or a .NET tool, with clean rollback and SHA256-verified releases."
     data-en="Enable or disable the hidden Windows Feature Management overrides that unlock experimental Native NVMe support: one-click script, .reg files or a .NET tool, with clean rollback and SHA256-verified releases."
@@ -22,15 +24,29 @@
   <meta property="og:image" content="https://giosci1994.github.io/feature-overrides-registry/social-preview.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%BD%3C/text%3E%3C/svg%3E" />
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='8' width='30' height='16' rx='8' fill='%2300b585'/%3E%3Ccircle cx='23' cy='16' r='6' fill='%2304110d'/%3E%3C/svg%3E" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
+  <script>
+    /* Entrance animation only when motion is allowed. If Motion never loads, the class is removed and nothing stays hidden. */
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+      var root = document.documentElement;
+      root.classList.add('motion-ready');
+      window.__foReveal = setTimeout(function () { root.classList.remove('motion-ready'); }, 1500);
+    })();
+  </script>
   <link rel="stylesheet" href="./css/style.css" />
+  <!-- Optional motion (motion.dev). The page works the same without it. -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@14.10.1/dist/motion.js" defer
+    integrity="sha384-lnXs/o2QVHbH7aNA9JGkcMdW38AWVgMHWWrPU/fGgHi+eRj2j0a8va/1nlijpjHX" crossorigin="anonymous"
+    onerror="document.documentElement.classList.remove('motion-ready')"></script>
   <script src="./js/main.js" defer></script>
 </head>
 
@@ -43,18 +59,22 @@
     <div class="container nav-inner">
       <div class="brand">
         <a class="brand-main" href="#top" aria-label="Feature Overrides">
-          <span class="brand-mark" aria-hidden="true">💽</span>
+          <span class="switch-mark" aria-hidden="true"></span>
           <span>Feature Overrides</span>
         </a>
       </div>
 
-      <nav class="nav-links" aria-label="Primary">
+      <nav id="primary-nav" class="nav-links" aria-label="Primary">
         <a href="#what" data-en="What it does" data-it="Cosa fa">What it does</a>
         <a href="#usage" data-en="Usage" data-it="Uso">Usage</a>
         <a href="#download" data-en="Download" data-it="Scarica">Download</a>
       </nav>
 
       <div class="nav-cta">
+        <button id="menu-toggle" class="btn ghost small menu-btn" type="button" aria-expanded="false"
+          aria-controls="primary-nav" aria-label="Open menu" hidden>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path class="i-open" d="M4 7h16M4 12h16M4 17h16"/><path class="i-close" d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
         <button id="lang-toggle" class="btn ghost small lang-btn" type="button" aria-label="Passa all'italiano">IT</button>
         <a class="btn primary small" href="https://github.com/giosci1994/feature-overrides-registry" target="_blank"
           rel="noreferrer">GitHub</a>
@@ -64,15 +84,15 @@
 
   <main id="top" class="container">
     <section class="hero">
-      <div class="hero-left">
+      <div class="hero-left reveal">
         <div class="kicker">
           <span class="dot"></span>
           <span data-en="Windows · Registry tool · GPL-3.0" data-it="Windows · Tool per il registro · GPL-3.0">Windows · Registry tool · GPL-3.0</span>
         </div>
 
-        <h1 data-en="Native NVMe, <span class=&quot;accent-text&quot;>one switch</span>."
-          data-it="Native NVMe, <span class=&quot;accent-text&quot;>un interruttore</span>.">
-          Native NVMe, <span class="accent-text">one switch</span>.
+        <h1 data-en="Native NVMe, <span class=&quot;accent-text&quot;>one switch</span>"
+          data-it="Native NVMe, <span class=&quot;accent-text&quot;>un interruttore</span>">
+          Native NVMe, <span class="accent-text">one switch</span>
         </h1>
 
         <p class="lead"
@@ -89,7 +109,7 @@
         </div>
 
         <div class="status-note">
-          <span aria-hidden="true">⚠️</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
           <span data-en="<b>Unofficial and experimental on Windows 11.</b> Microsoft supports Native NVMe only on Windows Server 2025. Create a restore point first."
             data-it="<b>Non ufficiale e sperimentale su Windows 11.</b> Microsoft supporta Native NVMe solo su Windows Server 2025. Crea prima un punto di ripristino.">
             <b>Unofficial and experimental on Windows 11.</b> Microsoft supports Native NVMe only on Windows Server
@@ -107,17 +127,21 @@
         </div>
       </div>
 
-      <div class="hero-right">
+      <div class="hero-right reveal">
         <div class="window reg" aria-hidden="true">
           <div class="win-bar">
             <span class="win-title">FeatureOverridesSetter.exe status</span>
+            <span class="win-controls"><svg viewBox="0 0 12 12"><path d="M1 6h10"/></svg><svg viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9"/></svg><svg viewBox="0 0 12 12"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9"/></svg></span>
           </div>
           <div class="reg-body">
             <div class="reg-key">HKLM\SYSTEM\CurrentControlSet\Policies\<br>Microsoft\FeatureManagement\Overrides</div>
             <div class="reg-row"><b>735209102</b><span>DWORD</span><span class="v">1</span></div>
             <div class="reg-row"><b>1853569164</b><span>DWORD</span><span class="v">1</span></div>
             <div class="reg-row"><b>156965516</b><span>DWORD</span><span class="v">1</span></div>
-            <div class="reg-state" data-en="● Native NVMe overrides: enabled" data-it="● Override Native NVMe: attivi">● Native NVMe overrides: enabled</div>
+            <div class="reg-status">
+              <div class="reg-state" data-en="● Native NVMe overrides: enabled" data-it="● Override Native NVMe: attivi">● Native NVMe overrides: enabled</div>
+              <span class="switch-mark"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -133,19 +157,19 @@
 
       <div class="cards-grid">
         <article class="card reveal">
-          <span class="card-icon">⚡</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>
           <h3 data-en="Possible gains" data-it="Possibili vantaggi">Possible gains</h3>
           <p data-en="Better numbers in some metrics: IOPS, reads and writes at certain block sizes."
             data-it="Numeri migliori in alcune metriche: IOPS, letture e scritture a certe dimensioni di blocco.">Better numbers in some metrics: IOPS, reads and writes at certain block sizes.</p>
         </article>
         <article class="card reveal">
-          <span class="card-icon">⚠️</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>
           <h3 data-en="Known caveats" data-it="Problemi noti">Known caveats</h3>
           <p data-en="On some systems: duplicate or unrecognized drives, management tools that lose the NVMe."
             data-it="Su alcuni sistemi: dischi duplicati o non riconosciuti, strumenti di gestione che perdono l'NVMe.">On some systems: duplicate or unrecognized drives, management tools that lose the NVMe.</p>
         </article>
         <article class="card reveal">
-          <span class="card-icon">↩️</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg></span>
           <h3 data-en="Clean rollback" data-it="Rollback pulito">Clean rollback</h3>
           <p data-en="Disable removes exactly the three values it created. Everything is under <code>HKLM</code>, so it needs administrator rights."
             data-it="Disabilita toglie esattamente i tre valori che ha creato. Tutto sta sotto <code>HKLM</code>, quindi servono i diritti di amministratore.">Disable removes exactly the three values it created. Everything is under <code>HKLM</code>, so it needs administrator rights.</p>
@@ -162,25 +186,25 @@
 
       <div class="cards-grid">
         <article class="card reveal">
-          <span class="card-icon">🖱️</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg></span>
           <h3 data-en="One-click menu" data-it="Menu one-click">One-click menu</h3>
           <p data-en="<code>scripts/installer.ps1</code>: Enable, Disable, Status and an optional Safe Mode fix."
             data-it="<code>scripts/installer.ps1</code>: Abilita, Disabilita, Stato e una correzione facoltativa per la modalità provvisoria."><code>scripts/installer.ps1</code>: Enable, Disable, Status and an optional Safe Mode fix.</p>
         </article>
         <article class="card reveal">
-          <span class="card-icon">📜</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 11 2-2-2-2"/><path d="M11 13h4"/><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></svg></span>
           <h3 data-en="PowerShell scripts" data-it="Script PowerShell">PowerShell scripts</h3>
           <p data-en="<code>set-overrides.ps1</code>, <code>remove-overrides.ps1</code>, <code>status-overrides.ps1</code>, non-interactive."
             data-it="<code>set-overrides.ps1</code>, <code>remove-overrides.ps1</code>, <code>status-overrides.ps1</code>, non interattivi."><code>set-overrides.ps1</code>, <code>remove-overrides.ps1</code>, <code>status-overrides.ps1</code>, non-interactive.</p>
         </article>
         <article class="card reveal">
-          <span class="card-icon">🗂️</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
           <h3 data-en=".reg files" data-it="File .reg">.reg files</h3>
           <p data-en="<code>reg/feature-overrides-enable.reg</code> and <code>reg/feature-overrides-disable.reg</code>, double-click."
             data-it="<code>reg/feature-overrides-enable.reg</code> e <code>reg/feature-overrides-disable.reg</code>, doppio clic."><code>reg/feature-overrides-enable.reg</code> and <code>reg/feature-overrides-disable.reg</code>, double-click.</p>
         </article>
         <article class="card reveal">
-          <span class="card-icon">📦</span>
+          <span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 2.004 0L20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg></span>
           <h3 data-en=".NET tool" data-it="Tool .NET">.NET tool</h3>
           <p data-en="<code>FeatureOverridesSetter.exe status | enable | disable</code>. Self-contained, nothing to install."
             data-it="<code>FeatureOverridesSetter.exe status | enable | disable</code>. Autonomo, niente da installare."><code>FeatureOverridesSetter.exe status | enable | disable</code>. Self-contained, nothing to install.</p>
@@ -224,13 +248,13 @@ powershell -ExecutionPolicy Bypass -File .\scripts\installer.ps1</code></pre>
 
   <footer class="container footer">
     <div class="footer-left">
-      <span aria-hidden="true">💽</span>
+      <span class="switch-mark" aria-hidden="true"></span>
       <span>© <span id="year">2026</span> giosci1994 · <span data-en="GPL-3.0 License" data-it="Licenza GPL-3.0">GPL-3.0 License</span></span>
     </div>
     <div class="footer-right">
       <a href="https://github.com/giosci1994/feature-overrides-registry" target="_blank" rel="noreferrer">GitHub</a>
       <a href="https://github.com/giosci1994/feature-overrides-registry/releases" target="_blank" rel="noreferrer">Releases</a>
-      <a href="https://buymeacoffee.com/giosci1994u" target="_blank" rel="noreferrer">☕ Buy Me a Coffee</a>
+      <a href="https://buymeacoffee.com/giosci1994u" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>Buy Me a Coffee</a>
     </div>
   </footer>
 </body>

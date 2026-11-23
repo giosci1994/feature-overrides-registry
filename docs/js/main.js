@@ -29,6 +29,24 @@ document.addEventListener('DOMContentLoaded', () => {
       langBtn.setAttribute('aria-label', lang === 'it' ? 'Switch to English' : "Passa all'italiano");
       langBtn.title = langBtn.getAttribute('aria-label');
     }
+    if (typeof setMenu === 'function') setMenu(menuOpen);
+  }
+
+  // Phone menu (under 640px): the button exists only when this script runs; without it the links stay in the bar.
+  const menuBtn = document.getElementById('menu-toggle');
+  const menu = document.getElementById('primary-nav');
+  let menuOpen = false;
+  const MENU_LABELS = {
+    en: { open: 'Open menu', close: 'Close menu' },
+    it: { open: 'Apri il menu', close: 'Chiudi il menu' },
+  };
+  function setMenu(open) {
+    menuOpen = open;
+    if (!menuBtn || !menu) return;
+    const labels = MENU_LABELS[root.lang === 'it' ? 'it' : 'en'];
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuBtn.setAttribute('aria-label', open ? labels.close : labels.open);
+    root.classList.toggle('menu-open', open);
   }
 
   // ?lang=it / ?lang=en wins, then the saved choice, then the browser language.
@@ -36,6 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let lang = ['en', 'it'].includes(fromUrl) ? fromUrl
     : saved() || ((navigator.language || 'en').toLowerCase().startsWith('it') ? 'it' : 'en');
   apply(lang);
+
+  if (menuBtn && menu) {
+    menuBtn.hidden = false;
+    root.classList.add('menu-ready');
+    setMenu(false);
+    menuBtn.addEventListener('click', () => setMenu(!menuOpen));
+    menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuOpen) { setMenu(false); menuBtn.focus(); }
+    });
+    window.matchMedia('(min-width: 641px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  }
 
   if (langBtn) {
     langBtn.addEventListener('click', () => {
@@ -48,20 +78,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
-  // Scroll reveal (Arborae standard)
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveals = document.querySelectorAll('.reveal');
-  if (reduceMotion || !('IntersectionObserver' in window)) {
-    reveals.forEach((el) => el.classList.add('visible'));
-  } else {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach((el) => io.observe(el));
+  // Entrance on scroll with Motion (motion.dev), optional: a short fade and rise.
+  // Content is visible by default; it is hidden only while Motion is expected (class
+  // motion-ready, removed after 1.5 s at most) and never with reduced motion.
+  const M = window.Motion;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  clearTimeout(window.__foReveal);
+  if (!M || reduceMotion || !M.animate || !M.inView || !root.classList.contains('motion-ready')) {
+    root.classList.remove('motion-ready');
+    return;
+  }
+
+  const ease = [0.22, 1, 0.36, 1];
+  const reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  // Hand the hidden start state from the class to inline styles, then fade and rise each element as it enters.
+  reveals.forEach((el) => { el.style.opacity = '0'; });
+  root.classList.remove('motion-ready');
+  const showAll = () => reveals.forEach((el) => { el.style.opacity = ''; el.style.transform = ''; });
+
+  // Elements entering together get a small stagger (50 ms, at most six steps).
+  let batch = 0;
+  let batchTimer = null;
+  try {
+    reveals.forEach((el) => {
+      M.inView(el, () => {
+        const delay = Math.min(batch, 5) * 0.05;
+        batch += 1;
+        clearTimeout(batchTimer);
+        batchTimer = setTimeout(() => { batch = 0; }, 120);
+        M.animate(el, { opacity: [0, 1], transform: ['translateY(8px)', 'translateY(0px)'] },
+          { duration: 0.4, delay: delay, ease: ease });
+      }, { amount: 0.2 });
+    });
+  } catch (e) {
+    showAll();
   }
 });
